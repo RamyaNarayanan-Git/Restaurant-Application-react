@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+function RenderDish({dish}) {
+    return (
+        <Card>
+            <CardImg top src={dish.image} alt={dish.name} />
+            <CardBody>
+                <CardTitle>{dish.name}</CardTitle>
+                <CardText>{dish.description}</CardText>
+            </CardBody>
+        </Card>
+    );
+}
+  
 
-        }
-    }
-
-    render() {
-        const dish = this.props.dish;
-        const comments = this.props.comments;
+    const DishDetail = (props)=> {
+        const dish = props.dish;
         if (dish != null) {
             return (
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        {this.renderDish(dish)}
+                        <RenderDish dish={dish}/>
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        {this.renderComments(comments)}
+                    <RenderComments comments={dish.comments}/>
                     </div>
 
                 </div>);
@@ -31,19 +35,9 @@ class DishDetail extends Component {
         }
     }
 
-    renderDish(dish) {
-        return (
-            <Card>
-                <CardImg top src={dish.image} alt={dish.name} />
-                <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                </CardBody>
-            </Card>
-        );
-    }
+    
 
-    renderComments(comments) {
+    function RenderComments({comments}) {
         if (comments != null) {
             const com = comments.map((comment) => {
                 return (
@@ -57,7 +51,7 @@ class DishDetail extends Component {
                                     --{comment.author},
                                 {new Intl.DateTimeFormat("en-GB", {
                                     year: "numeric",
-                                    month: "long",
+                                    month: "short",
                                     day: "2-digit"
                                 }).format(comment.Date)}
 
@@ -80,10 +74,10 @@ class DishDetail extends Component {
 
         else {
             return (
-                <div></div>
+                <div>No Comments</div>
             );
         }
 
     }
-}
+
 export default DishDetail;
