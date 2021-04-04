@@ -3,6 +3,7 @@ import {Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb,
     BreadcrumbItem, Button, Modal, ModalBody, ModalHeader, Row, Label, Col} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import {FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 
@@ -170,23 +171,33 @@ const DishDetail = (props) => {
 
 function RenderDish({ dish }) {
     return (
-        <Card>
-            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-            <CardBody>
-                <CardTitle>{dish.name}</CardTitle>
-                <CardText>{dish.description}</CardText>
-            </CardBody>
-        </Card>
+        <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
+            <Card>
+                <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                <CardBody>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
+                </CardBody>
+            </Card>
+        </FadeTransform>
     );
 }
 
 
 function RenderComments({comments, postComment, dishId}) {
     if (comments != null) {
+        
         const com = comments.map((comment) => {
             return (
+                <Stagger in>
                 <div key={comment.id}>
                     <ul>
+                    
+                    <Fade in>
                         <li className='list-unstyled .d-inline'>
                             <div className='row'>
                                 {comment.comment}
@@ -201,13 +212,17 @@ function RenderComments({comments, postComment, dishId}) {
 
                             </div>
                         </li>
+                        </Fade>
+                        
                     </ul>
                     
                 </div>
+                </Stagger>
+               
             );
 
         });
-        return (
+         return (
             <div>
                 <h4>Comments</h4>
                 {com}
